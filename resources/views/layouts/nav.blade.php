@@ -27,12 +27,17 @@
                     @endif
                 @else
                     <li class="nav-item">
-                        <a class="nav-link" role="button">
-                            {{ Auth::user()->name }}
+                        <a class="nav-link disabled">
+                            Hi, {{ Auth::user()->name }}.
+                        </a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a class="nav-link btn btn-outline-light" href="{{ route('home') }}">
+                            {{ __('Dashboard') }}
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" role="button" href="{{ route('logout') }}"
+                        <a class="nav-link btn btn-outline-light" href="{{ route('logout') }}"
                            onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                             {{ __('Logout') }}

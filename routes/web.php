@@ -2,5 +2,5 @@
 
 Auth::routes();
 
-Route::get('/', 'HomeController@index');
+Route::get('/', 'InfoController@index')->name('info');
 Route::get('/home', 'HomeController@index')->name('home');
