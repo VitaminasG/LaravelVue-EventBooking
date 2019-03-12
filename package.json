@@ -21,6 +21,7 @@
         "vue-template-compiler": "^2.6.8"
     },
     "dependencies": {
-        "bootstrap": "^4.3.1"
+        "bootstrap": "^4.3.1",
+        "vue-simple-calendar": "^4.2.1"
     }
 }
