@@ -27,8 +27,8 @@
                     @endif
                 @else
                     <li class="nav-item">
-                        <a class="nav-link disabled">
-                            Hi, {{ Auth::user()->name }}.
+                        <a class="nav-link">
+                            Howdily doodily, {{ Auth::user()->name }}.
                         </a>
                     </li>
                     <li class="nav-item mx-2">
@@ -37,7 +37,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link btn btn-outline-light" href="{{ route('logout') }}"
+                        <a class="nav-link" href="{{ route('logout') }}"
                            onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                             {{ __('Logout') }}

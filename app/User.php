@@ -36,4 +36,26 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+	/**
+	 * Get the event related to user
+	 */
+	public function event(){
+
+    	return $this->hasMany('App\Event');
+    }
+
+
+	/**
+	 * Get collection of events related to user
+	 *
+	 * @return array
+	 */
+	public function getEvent(){
+
+	    $user = User::find(1);
+
+	    return $user->event()->get();
+
+    }
 }
