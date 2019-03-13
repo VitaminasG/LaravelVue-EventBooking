@@ -11,6 +11,12 @@ html, body{
   height: 100%;
 }
 
+._flex-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
 ._flex-center {
   display: flex;
   flex-direction: column;
