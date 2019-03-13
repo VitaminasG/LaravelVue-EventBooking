@@ -45,17 +45,19 @@ class User extends Authenticatable
     	return $this->hasMany('App\Event');
     }
 
-
 	/**
 	 * Get collection of events related to user
+	 * @param User $id
 	 *
 	 * @return array
 	 */
-	public function getEvent(){
+	public function getEvent($id){
 
-	    $user = User::find(1);
+	    return User::find($id)->event()->get();
+    }
 
-	    return $user->event()->get();
+    public function getUserId(){
 
+		return $this->user();
     }
 }

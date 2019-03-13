@@ -1788,6 +1788,8 @@ __webpack_require__.r(__webpack_exports__);
 
 __webpack_require__(/*! vue-simple-calendar/static/css/default.css */ "./node_modules/vue-simple-calendar/static/css/default.css");
 
+var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "CalendarComponent",
   components: {
@@ -1799,16 +1801,17 @@ __webpack_require__(/*! vue-simple-calendar/static/css/default.css */ "./node_mo
     return {
       showDate: new Date(),
       picked: "",
-      events: [{
-        id: 1,
-        startDate: '2019-03-13',
-        title: 'Coding'
-      }, {
-        id: 2,
-        startDate: '2019-03-14',
-        title: 'Coding2'
-      }]
+      data: ""
     };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    axios.get('/home/user').then(function (response) {
+      return _this.data = response.data;
+    }).catch(function (error) {
+      console.log(error);
+    });
   },
   methods: {
     setShowDate: function setShowDate(d) {
@@ -21229,7 +21232,7 @@ var render = function() {
       _vm._v(" "),
       _c("calendar-view", {
         staticClass: "theme-default",
-        attrs: { "show-date": _vm.showDate, events: _vm.events },
+        attrs: { "show-date": _vm.showDate, events: _vm.data.events },
         on: { "click-date": _vm.fire },
         scopedSlots: _vm._u([
           {
@@ -21245,9 +21248,11 @@ var render = function() {
         ])
       }),
       _vm._v(" "),
-      _c("div", { staticClass: "card" }, [
-        _vm._v("\n        " + _vm._s(_vm.picked) + "\n    ")
-      ])
+      _vm.picked
+        ? _c("div", { staticClass: "card text-center mt-1" }, [
+            _vm._v("\n        " + _vm._s(_vm.picked) + "\n    ")
+          ])
+        : _vm._e()
     ],
     1
   )

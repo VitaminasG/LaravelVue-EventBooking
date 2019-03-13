@@ -5,14 +5,14 @@
                 @click-date="fire"
                 :show-date="showDate"
                 class="theme-default"
-                :events="events">
+                :events="data.events">
             <calendar-view-header
                     slot="header"
                     slot-scope="{ headerProps }"
                     :header-props="headerProps"
                     @input="setShowDate"/>
         </calendar-view>
-        <div class="card">
+        <div v-if="picked" class="card text-center mt-1">
             {{ picked }}
         </div>
     </div>
@@ -23,6 +23,8 @@
     import { CalendarView, CalendarViewHeader, CalendarMathMixin } from 'vue-simple-calendar/src/components/bundle.js';
 
     require('vue-simple-calendar/static/css/default.css');
+
+    const axios = require('axios');
 
     export default {
         name: "CalendarComponent",
@@ -35,11 +37,15 @@
             return {
                 showDate: new Date(),
                 picked : "",
-                events: [
-                     { id: 1, startDate: '2019-03-13', title: 'Coding'},
-                     { id: 2, startDate: '2019-03-14', title: 'Coding2'}
-                ]
+                data: "",
             }
+        },
+        mounted(){
+          axios.get('/home/user')
+              .then( response => (this.data = response.data))
+              .catch(function (error) {
+                  console.log(error)
+              })
         },
         methods: {
             setShowDate(d) {
