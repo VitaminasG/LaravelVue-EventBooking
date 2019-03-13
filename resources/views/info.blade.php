@@ -15,10 +15,11 @@
                             Back-End Task List:
                         </div>
                         <ul class="list-group">
-                            <li class="list-group-item text-success">Adjust Laravel Framework to a task</li>
+                            <li class="list-group-item text-success">Adjust Laravel Framework packages to a task</li>
                             <li class="list-group-item text-success">Add informational Component to base url</li>
-                            <li class="list-group-item text-success">Wire User and Event models with Event DB-seeding</li>
-                            <li class="list-group-item active">Adjust Controllers to pass a data to Vue</li>
+                            <li class="list-group-item text-success">Wire User and Event models with Event DB seeding</li>
+                            <li class="list-group-item text-success">Expend Auth controller to pass user data to Vue</li>
+                            <li class="list-group-item active">Create an Event API to control the events</li>
                         </ul>
                     </div>
                 </div>
@@ -32,7 +33,8 @@
                             <li class="list-group-item text-success">Find suitable Calendar component and integrate it</li>
                             <li class="list-group-item text-success">Add informational Component to base url</li>
                             <li class="list-group-item text-success">Add ToDo list to info Component</li>
-                            <li class="list-group-item active">Get data from Laravel</li>
+                            <li class="list-group-item text-success">Get data from Laravel and add to Calendar component</li>
+                            <li class="list-group-item active">Create an event booking interface for Calendar component</li>
                         </ul>
                     </div>
                 </div>
