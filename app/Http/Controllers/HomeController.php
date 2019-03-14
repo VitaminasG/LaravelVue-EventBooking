@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\User;
+use Illuminate\Http\Request;
+use App\Http\Resources\User as UserResource;
 
 class HomeController extends Controller
 {
@@ -33,46 +34,23 @@ class HomeController extends Controller
     }
 
 	/**
-	 * Get a data associated with User.
-	 *
-	 * @param $id
-	 *
-	 * @return array
-	 */
-
-    public function events($id){
-
-	    return $this->user->getEvent($id);
-
-    }
-
-	/**
-	 * Get User id.
-	 *
-	 * @return int
-	 */
-	public function userId(){
-
-    	return $this->req->user()->id;
-    }
-
-
-	/**
 	 * Send data as Json response
 	 *
-	 * @return \Illuminate\Http\JsonResponse
+	 * @return mixed
 	 */
 	public function data(){
 
-	    $id = $this->userId();
+		return response()->json(
+			new UserResource(User::find($this->req->user()->id))
+		);
 
-	    $events = $this->events($id);
+    }
 
-	    return response()->json([
+    public function dummy(){
 
-	    	'id' => $id,
-		    'events' => $events
+	    return response()->json(
+		    new UserResource(User::find(2))
+	    );
 
-	    ]);
     }
 }
