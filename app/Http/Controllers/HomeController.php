@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Resources\User as UserResource;
+use App\User;
 
 class HomeController extends Controller
 {
@@ -14,11 +15,9 @@ class HomeController extends Controller
      * @return void
      */
 
-    public function __construct(User $user, Request $request)
+    public function __construct()
     {
         $this->middleware('auth');
-        $this->user = $user;
-        $this->req = $request;
     }
 
     /**
@@ -34,23 +33,32 @@ class HomeController extends Controller
     }
 
 	/**
+	 * Identify a user
+	 *
+	 * @return string
+	 */
+
+	public function who(){
+
+		return response()->json(
+
+			$token = Auth::user()->api_token
+
+		);
+	}
+
+	/**
 	 * Send data as Json response
 	 *
 	 * @return mixed
 	 */
-	public function data(){
 
-		return response()->json(
-			new UserResource(User::find($this->req->user()->id))
-		);
+	public function view(){
 
-    }
+			return response()->json(
 
-    public function dummy(){
+				new UserResource(User::find(Auth::id()))
 
-	    return response()->json(
-		    new UserResource(User::find(2))
-	    );
-
-    }
+			);
+	}
 }

@@ -1,11 +1,14 @@
 <?php
 
+use App\Event;
 use Faker\Generator as Faker;
 
-$factory->define(App\Event::class, function (Faker $faker) {
+/** @var array $factory */
+
+$factory->define(Event::class, function (Faker $faker) {
     return [
-        'user_id' => 1,
-	    'title' => $faker->realText(30,1),
+        'user_id' => rand(1, 2),
+	    'title' => $faker->realText(20,1),
 	    'date' => $date = '2019-03-' . rand(13, 31),
     ];
 });
