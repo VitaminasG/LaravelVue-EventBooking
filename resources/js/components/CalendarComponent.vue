@@ -1,20 +1,37 @@
 <template>
-    <div id="app">
-        <h3>My Calendar</h3>
-        <calendar-view
-                @click-date="fire"
-                :show-date="showDate"
-                class="theme-default"
-                :events="data.events">
-            <calendar-view-header
-                    slot="header"
-                    slot-scope="{ headerProps }"
-                    :header-props="headerProps"
-                    @input="setShowDate"/>
-        </calendar-view>
-        <div v-if="picked" class="card text-center mt-1">
-            {{ picked }}
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-4">
+                <control-component></control-component>
+            </div>
+
+            <div class="col-8">
+                <div id="app" class="card">
+                    <h3 class="card-header text-center">My Calendar</h3>
+                    <div class="card-body">
+                        <calendar-view
+                                @click-date="fire"
+                                :show-date="showDate"
+                                class="theme-default"
+                                :events="data.events">
+                            <calendar-view-header
+                                    slot="header"
+                                    slot-scope="{ headerProps }"
+                                    :header-props="headerProps"
+                                    @input="setShowDate"/>
+                        </calendar-view>
+                        <div v-if="picked" class="card text-center mt-1">
+                            {{ picked }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
+
     </div>
 </template>
 
@@ -64,10 +81,9 @@
 <style scoped>
 
     #app {
-        font-family: 'Avenir', Helvetica, Arial, sans-serif;
         color: #2c3e50;
-        height: 67vh;
-        width: 90vw;
+        height: 100%;
+        width: 90%;
         margin-left: auto;
         margin-right: auto;
     }
