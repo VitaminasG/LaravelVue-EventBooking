@@ -22,7 +22,7 @@ class HomeController extends Controller
     }
 
     /**
-     * Show Calendar interface For Auth User.
+     * Show Calendar interface with forced token generation for Auth User.
      * @param Request $request
      *
      * @return mixed
@@ -44,7 +44,7 @@ class HomeController extends Controller
     }
 
 	/**
-	 * Send data as Json response
+	 * Send data as Json response with Auth guard API
 	 *
 	 * @return mixed
 	 */
