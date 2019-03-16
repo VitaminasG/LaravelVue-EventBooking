@@ -41,8 +41,10 @@
             }
         },
         mounted(){
-          axios.get('/home/user')
-              .then( response => (this.data = response.data))
+          axios.get('home/data')
+              .then( response => {
+                  this.data = response.data;
+              })
               .catch(function (error) {
                   console.log(error)
               })
@@ -53,7 +55,6 @@
             },
 
             fire(el){
-
                 this.picked = el;
             }
         }

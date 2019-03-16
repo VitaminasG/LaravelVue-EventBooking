@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Resources\User as UserResource;
 use App\User;
@@ -22,30 +23,25 @@ class HomeController extends Controller
 
     /**
      * Show Calendar interface For Auth User.
+     * @param Request $request
      *
      * @return mixed
      */
 
-    public function index()
+    public function index(Request $request)
     {
 
-        return view('home');
+    	$token = Str::random(60);
+
+    	$request->user()->forceFill([
+
+    		'api_token' => hash('sha256', $token),
+
+	    ])->save();
+
+        return view('home', compact('token'));
+
     }
-
-	/**
-	 * Identify a user
-	 *
-	 * @return string
-	 */
-
-	public function who(){
-
-		return response()->json(
-
-			$token = Auth::user()->api_token
-
-		);
-	}
 
 	/**
 	 * Send data as Json response
@@ -57,7 +53,7 @@ class HomeController extends Controller
 
 			return response()->json(
 
-				new UserResource(User::find(Auth::id()))
+				new UserResource(User::find(Auth::guard('api')->user()->id))
 
 			);
 	}

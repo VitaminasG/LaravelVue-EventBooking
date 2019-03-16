@@ -1807,8 +1807,8 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
   mounted: function mounted() {
     var _this = this;
 
-    axios.get('/home/user').then(function (response) {
-      return _this.data = response.data;
+    axios.get('home/data').then(function (response) {
+      _this.data = response.data;
     }).catch(function (error) {
       console.log(error);
     });
@@ -34073,6 +34073,14 @@ if (token) {
   window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
 } else {
   console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
+}
+
+var api_token = document.head.querySelector('meta[name="api-token"]');
+
+if (api_token) {
+  window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + api_token.content;
+} else {
+  console.error('APi Token is not found: https://laravel.com/docs/5.8/api-authentication#passing-tokens-in-requests');
 }
 
 /***/ }),

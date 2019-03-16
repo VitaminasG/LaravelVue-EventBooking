@@ -10,9 +10,9 @@ use Illuminate\Support\Str;
 $factory->define(User::class, function (Faker $faker) {
     return [
         'name' => $faker->firstName,
-        'email' => Str::random(1) . 'le@example.com',
+        'email' => Str::random(1) . '@example.com',
         'email_verified_at' => now(),
         'password' => Hash::make('12345678'),
-	    'api_token' => Str::random(20),
+	    'api_token' => Str::random(60),
     ];
 });
