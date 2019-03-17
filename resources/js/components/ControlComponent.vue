@@ -1,29 +1,59 @@
 <template>
     <form v-on:submit.prevent>
-        <div class="form-group">
-            <div v-if="message" class="alert alert-info text-center" role="alert">
-                {{ message }}
+
+        <!-- New Event -->
+        <h5>New Event: </h5>
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">New Date:</span>
             </div>
-        </div>
-        <div class="form-group">
-            <label>Date</label>
             <input type="text" class="form-control"
-                   placeholder="Please select day from Calendar."
-                   :value="date"
+                   placeholder="Please select a day."
+                   v-model="date"
                    :disabled="true">
         </div>
-        <div class="form-group">
-            <label>Tile</label>
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">New Title:</span>
+            </div>
             <input type="text" class="form-control"
-                   placeholder="Title"
-                   :value="title">
-            <small class="form-text text-muted">
-                Please enter your event title.
-            </small>
+                   placeholder="Please select a day."
+                   v-model="cTitle"
+                   :disabled="!date">
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-        <button type="submit" class="btn btn-info" :disabled="show">Update</button>
-        <button type="submit" class="btn btn-danger" :disabled="show">Delete</button>
+
+        <button type="submit" class="btn btn-primary" :disabled="buttons.sub">Submit</button>
+
+        <hr>
+
+        <!-- Booked Event -->
+        <h5>Booked Event: </h5>
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Event Date:</span>
+            </div>
+            <input type="text" class="form-control"
+                   placeholder="Select booked event."
+                   v-model="eDate"
+                   :disabled="true">
+        </div>
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Event Title:</span>
+            </div>
+            <input type="text" class="form-control"
+                   placeholder="Select booked event."
+                   v-model="eTitle"
+                   :disabled="!eTitle">
+        </div>
+
+        <button type="submit" class="btn btn-info" :disabled="buttons.edit">Update</button>
+        <button type="submit" class="btn btn-danger" :disabled="buttons.edit">Delete</button>
+
     </form>
 </template>
 
@@ -31,32 +61,53 @@
     export default {
         data(){
             return{
-                show: true
+                buttons: { sub:true, edit:true },
+                cDate: '',
+                cTitle: '',
             }
         },
         props: {
             date: {
                 default: ''
             },
-            title: {
-                default: ''
-            },
-            message: {
-                default: ''
+            event:{
+                type: Object
             }
         },
         watch:{
-            title: function (value){
-                if(value.length > 0){
-                    return this.notEmpty(false);
-                }else {
-                    this.notEmpty(true);
+            cTitle(value){
+                if(value.length > 0 && this.date.length > 0){
+                    this.notEmpty('sub', false);
+                } else {
+                    this.notEmpty('sub', true);
                 }
-            }
+            },
+        },
+        computed:{
+            eDate:function(){
+                if(this.event.eDate.length !== 0){
+                    this.notEmpty('edit', false);
+                    return this.event.eDate;
+                } else {
+                    this.notEmpty('edit', true);
+                }
+            },
+            eTitle:function(){
+                return this.event.eTitle;
+            },
         },
         methods: {
-            notEmpty(bool){
-                return this.show = bool;
+            notEmpty(button, bool){
+                this.buttons[button] = bool;
+            },
+            submit(){
+
+            },
+            update(){
+
+            },
+            delete(){
+
             }
         }
     }

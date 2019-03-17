@@ -43,7 +43,7 @@
 /******/
 /******/ 	// script path function
 /******/ 	function jsonpScriptSrc(chunkId) {
-/******/ 		return __webpack_require__.p + "chunks/" + ({}[chunkId]||chunkId) + "." + {"0":"98dfb4666477ac8eec7e","1":"d659beb38005f72e6347"}[chunkId] + ".js"
+/******/ 		return __webpack_require__.p + "chunks/" + ({}[chunkId]||chunkId) + "." + {"0":"c7bf1061249740da1393","1":"d659beb38005f72e6347"}[chunkId] + ".js"
 /******/ 	}
 /******/
 /******/ 	// The require function
@@ -1964,6 +1964,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -1979,30 +1993,47 @@ __webpack_require__.r(__webpack_exports__);
     return {
       show: true,
       url: '/home/data',
+      userData: '',
+      defaultMsg: 'Hi! I am your action messenger. Please pick date from calendar',
+      calendMsg: '',
       showDate: new Date(),
       pickDate: '',
       pickTitle: '',
-      data: '',
-      message: ''
+      eBooked: {
+        eId: '',
+        eMsg: '',
+        eTitle: '',
+        eDate: ''
+      }
     };
   },
   mounted: function mounted() {
     this.request(this.url);
   },
+  computed: {
+    message: function message() {
+      if (this.calendMsg.length > 0) {
+        return this.calendMsg;
+      } else {
+        return this.defaultMsg;
+      }
+    }
+  },
   methods: {
     onClickDay: function onClickDay(d) {
-      this.message = "You clicked on: ".concat(d.toDateString());
+      this.calendMsg = "You clicked on: ".concat(d.toDateString());
       this.pickDate = this.isoYearMonthDay(d);
       this.pickTitle = '';
     },
     setShowDate: function setShowDate(d) {
-      this.message = "Changing calendar view to ".concat(d.toLocaleDateString());
+      this.calendMsg = "Changing calendar view to ".concat(d.toLocaleDateString());
       this.showDate = d;
     },
     onClickEvent: function onClickEvent(e) {
-      this.message = "Your booked event with title: ".concat(e.title);
-      this.pickTitle = e.title;
-      this.pickDate = this.isoYearMonthDay(e.startDate);
+      this.calendMsg = "Your booked event with title: ".concat(e.title);
+      this.eBooked.eId = e.id;
+      this.eBooked.eTitle = e.title;
+      this.eBooked.eDate = this.isoYearMonthDay(e.startDate);
     },
     thisMonth: function thisMonth(d, h, m) {
       var t = new Date();
@@ -2012,7 +2043,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios__WEBPACK_IMPORTED_MODULE_2___default.a.get(url).then(function (response) {
-        _this.data = response.data;
+        _this.userData = response.data;
         _this.show = false;
       }).catch(function (error) {
         console.log(error);
@@ -2068,12 +2099,13 @@ exports.push([module.i, "\n.cv-header {\n\tdisplay: flex;\n\tflex: 0 1 auto;\n\t
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+var escape = __webpack_require__(/*! ../../../node_modules/css-loader/lib/url/escape.js */ "./node_modules/css-loader/lib/url/escape.js");
 exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
 // imports
 
 
 // module
-exports.push([module.i, "\n#app[data-v-56bbe5f8] {\n    color: #2c3e50;\n    height: 100%;\n    width: 90%;\n    margin-left: auto;\n    margin-right: auto;\n}\n\n", ""]);
+exports.push([module.i, "\n#app[data-v-56bbe5f8] {\n    color: #2c3e50;\n    height: 100%;\n    width: 90%;\n    margin-left: auto;\n    margin-right: auto;\n}\n#messenger[data-v-56bbe5f8] {\n    background-image: url(" + escape(__webpack_require__(/*! ../../assets/Messenger.svg */ "./resources/assets/Messenger.svg")) + ");\n    background-position: center;\n    background-repeat: no-repeat;\n    background-size: 25px;\n    padding: 1.5em;\n}\n#messenger .alert[data-v-56bbe5f8] {\n    border: none;\n    border-radius: 0;\n}\n\n", ""]);
 
 // exports
 
@@ -2162,6 +2194,33 @@ function toComment(sourceMap) {
 	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
 
 	return '/*# ' + data + ' */';
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/lib/url/escape.js":
+/*!***************************************************!*\
+  !*** ./node_modules/css-loader/lib/url/escape.js ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = function escape(url) {
+    if (typeof url !== 'string') {
+        return url
+    }
+    // If url is already wrapped in quotes, remove them
+    if (/^['"].*['"]$/.test(url)) {
+        url = url.slice(1, -1);
+    }
+    // Should url be wrapped?
+    // See https://drafts.csswg.org/css-values-3/#urls
+    if (/["'() \t\n]/.test(url)) {
+        return '"' + url.replace(/"/g, '\\"').replace(/\n/g, '\\n') + '"'
+    }
+
+    return url
 }
 
 
@@ -21424,6 +21483,36 @@ var render = function() {
               expression: "!show"
             }
           ],
+          staticClass: "row mb-3"
+        },
+        [
+          _c("div", { staticClass: "col" }, [
+            _c("div", { staticClass: "input-group" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c("div", { staticClass: "alert alert-info text-center mb-0" }, [
+                _vm._v(
+                  "\n                    " +
+                    _vm._s(_vm.message) +
+                    "\n                "
+                )
+              ])
+            ])
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: !_vm.show,
+              expression: "!show"
+            }
+          ],
           staticClass: "row h-100 w-100"
         },
         [
@@ -21432,17 +21521,13 @@ var render = function() {
             { staticClass: "col-sm-4 _flex-block" },
             [
               _c("control-component", {
-                attrs: {
-                  date: _vm.pickDate,
-                  title: _vm.pickTitle,
-                  message: _vm.message
-                }
+                attrs: { date: _vm.pickDate, event: _vm.eBooked }
               })
             ],
             1
           ),
           _vm._v(" "),
-          _c("div", { staticClass: "col-sm-8 _flex-block" }, [
+          _c("div", { staticClass: "col-sm-8 _flex-block my-2" }, [
             _c("div", { staticClass: "card", attrs: { id: "app" } }, [
               _c("h3", { staticClass: "card-header text-center" }, [
                 _vm._v("My Calendar")
@@ -21456,7 +21541,8 @@ var render = function() {
                     staticClass: "theme-default",
                     attrs: {
                       "show-date": _vm.showDate,
-                      events: _vm.data.events
+                      events: _vm.userData.events,
+                      "disable-past": true
                     },
                     on: {
                       "click-date": _vm.onClickDay,
@@ -21486,7 +21572,19 @@ var render = function() {
     1
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group-prepend" }, [
+      _c("span", {
+        staticClass: "input-group-text",
+        attrs: { id: "messenger" }
+      })
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -34108,6 +34206,17 @@ module.exports = function(module) {
 	return module;
 };
 
+
+/***/ }),
+
+/***/ "./resources/assets/Messenger.svg":
+/*!****************************************!*\
+  !*** ./resources/assets/Messenger.svg ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/images/Messenger.svg?fc5344c28cc6300ce6ea996cb1ef8466";
 
 /***/ }),
 

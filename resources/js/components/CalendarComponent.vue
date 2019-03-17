@@ -4,13 +4,26 @@
 
         <loading-component v-show="show"></loading-component>
 
+        <div v-show="!show" class="row mb-3">
+            <div class="col">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="messenger"></span>
+                    </div>
+                    <div class="alert alert-info text-center mb-0">
+                        {{ message }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div v-show="!show" class="row h-100 w-100">
 
             <div class="col-sm-4 _flex-block">
-                <control-component :date="pickDate" :title="pickTitle" :message="message"></control-component>
+                <control-component :date="pickDate" :event="eBooked"></control-component>
             </div>
 
-            <div class="col-sm-8 _flex-block">
+            <div class="col-sm-8 _flex-block my-2">
                 <div id="app" class="card">
                     <h3 class="card-header text-center">My Calendar</h3>
                     <div class="card-body">
@@ -18,8 +31,9 @@
                                 @click-date="onClickDay"
                                 @click-event="onClickEvent"
                                 :show-date="showDate"
-                                class="theme-default"
-                                :events="data.events">
+                                :events="userData.events"
+                                :disable-past="true"
+                                class="theme-default">
                             <calendar-view-header
                                     slot="header"
                                     slot-scope="{ headerProps }"
@@ -50,33 +64,49 @@
             return {
                 show: true,
                 url: '/home/data',
+                userData: '',
+                defaultMsg: 'Hi! I am your action messenger. Please pick date from calendar',
+                calendMsg: '',
                 showDate: new Date(),
                 pickDate: '',
                 pickTitle: '',
-                data: '',
-                message: ''
+
+                eBooked: {
+                    eId:'', eMsg:'', eTitle:'', eDate:''
+                }
             }
         },
         mounted(){
             this.request(this.url);
         },
+        computed:{
+            message(){
+                if(this.calendMsg.length > 0){
+                    return this.calendMsg;
+                } else {
+                    return this.defaultMsg;
+                }
+            }
+        },
         methods: {
 
             onClickDay(d) {
-                this.message = `You clicked on: ${d.toDateString()}`;
+                this.calendMsg = `You clicked on: ${d.toDateString()}`;
                 this.pickDate = this.isoYearMonthDay(d);
                 this.pickTitle = ''
             },
 
             setShowDate(d) {
-                this.message = `Changing calendar view to ${d.toLocaleDateString()}`;
+                this.calendMsg = `Changing calendar view to ${d.toLocaleDateString()}`;
                 this.showDate = d
             },
 
             onClickEvent(e) {
-                this.message = `Your booked event with title: ${e.title}`;
-                this.pickTitle = e.title;
-                this.pickDate = this.isoYearMonthDay(e.startDate);
+                this.calendMsg = `Your booked event with title: ${e.title}`;
+
+                this.eBooked.eId = e.id;
+                this.eBooked.eTitle = e.title;
+                this.eBooked.eDate = this.isoYearMonthDay(e.startDate);
             },
 
             thisMonth(d, h, m) {
@@ -87,7 +117,7 @@
             request(url){
                 axios.get(url)
                     .then( response => {
-                        this.data = response.data;
+                        this.userData = response.data;
                         this.show = false;
                     })
                     .catch(function (error) {
@@ -106,6 +136,19 @@
         width: 90%;
         margin-left: auto;
         margin-right: auto;
+    }
+
+    #messenger {
+        background-image: url('../../assets/Messenger.svg');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 25px;
+        padding: 1.5em;
+    }
+
+    #messenger .alert {
+        border: none;
+        border-radius: 0;
     }
 
 </style>

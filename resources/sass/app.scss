@@ -52,11 +52,15 @@ html, body{
 /* Grid */
 
 .theme-default .cv-day.today {
-  background-color: #ffe;
+  background-color: #dac9ff;
 }
 
 .theme-default .cv-day.past {
-  background-color: #fafafa;
+  background-image: url("../../resources/assets/x.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-color: #e6e6e6;
 }
 
 .theme-default .cv-day.outsideOfMonth {
@@ -67,9 +71,10 @@ html, body{
 
 .theme-default .cv-event {
   border-color: #e0e0f0;
-  border-radius: 0.5em;
-  background-color: #e7e7ff;
+  border-radius: 0;
+  background-color: #99a6bb;
   text-overflow: ellipsis;
+  z-index: 5;
 }
 
 .theme-default .cv-event.purple {
