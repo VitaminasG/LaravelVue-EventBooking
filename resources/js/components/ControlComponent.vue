@@ -1,25 +1,64 @@
 <template>
     <form v-on:submit.prevent>
         <div class="form-group">
-            <label for="exampleInputEmail1">Email address</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            <div v-if="message" class="alert alert-info text-center" role="alert">
+                {{ message }}
+            </div>
         </div>
         <div class="form-group">
-            <label for="exampleInputPassword1">Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+            <label>Date</label>
+            <input type="text" class="form-control"
+                   placeholder="Please select day from Calendar."
+                   :value="date"
+                   :disabled="true">
         </div>
-        <div class="form-group form-check">
-            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-            <label class="form-check-label" for="exampleCheck1">Check me out</label>
+        <div class="form-group">
+            <label>Tile</label>
+            <input type="text" class="form-control"
+                   placeholder="Title"
+                   :value="title">
+            <small class="form-text text-muted">
+                Please enter your event title.
+            </small>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-info" :disabled="show">Update</button>
+        <button type="submit" class="btn btn-danger" :disabled="show">Delete</button>
     </form>
 </template>
 
 <script>
     export default {
-        name: "ControlComponent"
+        data(){
+            return{
+                show: true
+            }
+        },
+        props: {
+            date: {
+                default: ''
+            },
+            title: {
+                default: ''
+            },
+            message: {
+                default: ''
+            }
+        },
+        watch:{
+            title: function (value){
+                if(value.length > 0){
+                    return this.notEmpty(false);
+                }else {
+                    this.notEmpty(true);
+                }
+            }
+        },
+        methods: {
+            notEmpty(bool){
+                return this.show = bool;
+            }
+        }
     }
 </script>
 

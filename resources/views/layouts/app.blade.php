@@ -28,7 +28,7 @@
 
         @include('layouts/nav')
 
-        <main class="d-flex flex-column justify-content-between h-75">
+        <main class="_flex-block h-75">
             <div class="_flex-center h-100">
                 @yield('content')
             </div>

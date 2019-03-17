@@ -1,19 +1,22 @@
 <template>
 
-    <div class="container">
+    <div class="container _flex-center h-75">
 
-        <div class="row">
+        <loading-component v-show="show"></loading-component>
 
-            <div class="col-4">
-                <control-component></control-component>
+        <div v-show="!show" class="row h-100 w-100">
+
+            <div class="col-sm-4 _flex-block">
+                <control-component :date="pickDate" :title="pickTitle" :message="message"></control-component>
             </div>
 
-            <div class="col-8">
+            <div class="col-sm-8 _flex-block">
                 <div id="app" class="card">
                     <h3 class="card-header text-center">My Calendar</h3>
                     <div class="card-body">
                         <calendar-view
-                                @click-date="fire"
+                                @click-date="onClickDay"
+                                @click-event="onClickEvent"
                                 :show-date="showDate"
                                 class="theme-default"
                                 :events="data.events">
@@ -23,9 +26,6 @@
                                     :header-props="headerProps"
                                     @input="setShowDate"/>
                         </calendar-view>
-                        <div v-if="picked" class="card text-center mt-1">
-                            {{ picked }}
-                        </div>
                     </div>
                 </div>
             </div>
@@ -37,42 +37,62 @@
 
 <script>
 
+    import LoadingComponent from './AsyncLoading';
     import { CalendarView, CalendarViewHeader, CalendarMathMixin } from 'vue-simple-calendar/src/components/bundle.js';
 
-    require('vue-simple-calendar/static/css/default.css');
-
-    const axios = require('axios');
+    import axios from 'axios';
 
     export default {
         name: "CalendarComponent",
-        components: {
-            CalendarView,
-            CalendarViewHeader
-        },
-        mixins: [CalendarMathMixin],
+        components: { CalendarView, CalendarViewHeader, LoadingComponent },
+        mixins: [ CalendarMathMixin ],
         data() {
             return {
+                show: true,
+                url: '/home/data',
                 showDate: new Date(),
-                picked : "",
-                data: "",
+                pickDate: '',
+                pickTitle: '',
+                data: '',
+                message: ''
             }
         },
         mounted(){
-          axios.get('home/data')
-              .then( response => {
-                  this.data = response.data;
-              })
-              .catch(function (error) {
-                  console.log(error)
-              })
+            this.request(this.url);
         },
         methods: {
-            setShowDate(d) {
-                this.showDate = d;
+
+            onClickDay(d) {
+                this.message = `You clicked on: ${d.toDateString()}`;
+                this.pickDate = this.isoYearMonthDay(d);
+                this.pickTitle = ''
             },
 
-            fire(el){
-                this.picked = el;
+            setShowDate(d) {
+                this.message = `Changing calendar view to ${d.toLocaleDateString()}`;
+                this.showDate = d
+            },
+
+            onClickEvent(e) {
+                this.message = `Your booked event with title: ${e.title}`;
+                this.pickTitle = e.title;
+                this.pickDate = this.isoYearMonthDay(e.startDate);
+            },
+
+            thisMonth(d, h, m) {
+                const t = new Date();
+                return new Date(t.getFullYear(), t.getMonth(), d, h || 0, m || 0)
+            },
+
+            request(url){
+                axios.get(url)
+                    .then( response => {
+                        this.data = response.data;
+                        this.show = false;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
             }
         }
     }
