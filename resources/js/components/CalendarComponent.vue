@@ -20,7 +20,7 @@
         <div v-show="!show" class="row h-100 w-100">
 
             <div class="col-sm-4 _flex-block">
-                <control-component :date="pickDate" :event="eBooked"></control-component>
+                <control-component :date="picked" :event="eBooked"></control-component>
             </div>
 
             <div class="col-sm-8 _flex-block my-2">
@@ -28,6 +28,7 @@
                     <h3 class="card-header text-center">My Calendar</h3>
                     <div class="card-body">
                         <calendar-view
+                                @update="again = $event"
                                 @click-date="onClickDay"
                                 @click-event="onClickEvent"
                                 :show-date="showDate"
@@ -65,11 +66,16 @@
                 show: true,
                 url: '/home/data',
                 userData: '',
+                again: false,
+
                 defaultMsg: 'Hi! I am your action messenger. Please pick date from calendar',
                 calendMsg: '',
+
                 showDate: new Date(),
-                pickDate: '',
-                pickTitle: '',
+
+                picked:{
+                    pDate:'', pUserId:''
+                },
 
                 eBooked: {
                     eId:'', eMsg:'', eTitle:'', eDate:''
@@ -86,14 +92,20 @@
                 } else {
                     return this.defaultMsg;
                 }
-            }
+            },
+        },
+        watch:{
+          again(){
+              this.show = true;
+              this.request(this.url);
+          }
         },
         methods: {
 
             onClickDay(d) {
                 this.calendMsg = `You clicked on: ${d.toDateString()}`;
-                this.pickDate = this.isoYearMonthDay(d);
-                this.pickTitle = ''
+                this.picked.pDate = this.isoYearMonthDay(d);
+                this.picked.pUserId = this.userData.id;
             },
 
             setShowDate(d) {
@@ -123,7 +135,7 @@
                     .catch(function (error) {
                         console.log(error);
                     })
-            }
+            },
         }
     }
 </script>

@@ -8,63 +8,40 @@ use Illuminate\Http\Request;
 class EventController extends Controller
 {
 
-	public function __construct()
-	{
-		$this->authorizeResource(Event::class, 'event');
-	}
-
-
 	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return \Illuminate\Http\Response
+	 * Create a new controller instance.
+	 * @param Event $event
+	 * @return void
 	 */
-	public function index()
-	{
-		//
-	}
 
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return \Illuminate\Http\Response
-	 */
-	public function create()
-	{
-		//
+	public function __construct(Event $event) {
+
+		$this->event = $event;
 	}
 
 	/**
 	 * Store a newly created resource in storage.
 	 *
-	 * @param  \Illuminate\Http\Request  $request
+	 * @param  Request $request
 	 * @return \Illuminate\Http\Response
+	 * @throws \Illuminate\Auth\Access\AuthorizationException
 	 */
 	public function store(Request $request)
 	{
-		// add event
-	}
 
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function show($id)
-	{
-		// get event
-	}
+		$this->authorize('store', Event::class);
 
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function edit($id)
-	{
-		// edit event
+		$request->validate([
+			'date' => 'required',
+			'title' => 'required'
+		]);
+
+		$this->event->date = $request->date;
+		$this->event->title = $request->title;
+		$this->event->user_id = $request->user('api')->id;
+		$this->event->save();
+
+		return response()->json('Event was saved!', '200');
 	}
 
 	/**
@@ -73,10 +50,23 @@ class EventController extends Controller
 	 * @param  \Illuminate\Http\Request  $request
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
+	 * @throws \Illuminate\Auth\Access\AuthorizationException
 	 */
 	public function update(Request $request, $id)
 	{
-		//
+		$this->authorize('update', Event::class);
+
+		$request->validate([
+			'title' => 'required'
+		]);
+
+		$event = $this->event->find($id);
+
+		$event->title = $request->title;
+
+		$event->update();
+
+		return response()->json('Event Title was updated!', '200');
 	}
 
 	/**
@@ -84,9 +74,16 @@ class EventController extends Controller
 	 *
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
+	 * @throws \Illuminate\Auth\Access\AuthorizationException
 	 */
 	public function destroy($id)
 	{
-		// delete event
+		$this->authorize('delete', Event::class);
+
+		$event = $this->event->find($id);
+
+		$event->delete();
+
+		return response()->json('Event was deleted!', '200');
 	}
 }

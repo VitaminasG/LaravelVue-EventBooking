@@ -43,7 +43,7 @@
 /******/
 /******/ 	// script path function
 /******/ 	function jsonpScriptSrc(chunkId) {
-/******/ 		return __webpack_require__.p + "chunks/" + ({}[chunkId]||chunkId) + "." + {"0":"c7bf1061249740da1393","1":"d659beb38005f72e6347"}[chunkId] + ".js"
+/******/ 		return __webpack_require__.p + "chunks/" + ({}[chunkId]||chunkId) + "." + {"0":"fd2d7ca09900dd9bb39b","1":"d659beb38005f72e6347"}[chunkId] + ".js"
 /******/ 	}
 /******/
 /******/ 	// The require function
@@ -1978,6 +1978,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -1994,11 +1995,14 @@ __webpack_require__.r(__webpack_exports__);
       show: true,
       url: '/home/data',
       userData: '',
+      again: false,
       defaultMsg: 'Hi! I am your action messenger. Please pick date from calendar',
       calendMsg: '',
       showDate: new Date(),
-      pickDate: '',
-      pickTitle: '',
+      picked: {
+        pDate: '',
+        pUserId: ''
+      },
       eBooked: {
         eId: '',
         eMsg: '',
@@ -2019,11 +2023,17 @@ __webpack_require__.r(__webpack_exports__);
       }
     }
   },
+  watch: {
+    again: function again() {
+      this.show = true;
+      this.request(this.url);
+    }
+  },
   methods: {
     onClickDay: function onClickDay(d) {
       this.calendMsg = "You clicked on: ".concat(d.toDateString());
-      this.pickDate = this.isoYearMonthDay(d);
-      this.pickTitle = '';
+      this.picked.pDate = this.isoYearMonthDay(d);
+      this.picked.pUserId = this.userData.id;
     },
     setShowDate: function setShowDate(d) {
       this.calendMsg = "Changing calendar view to ".concat(d.toLocaleDateString());
@@ -21521,7 +21531,7 @@ var render = function() {
             { staticClass: "col-sm-4 _flex-block" },
             [
               _c("control-component", {
-                attrs: { date: _vm.pickDate, event: _vm.eBooked }
+                attrs: { date: _vm.picked, event: _vm.eBooked }
               })
             ],
             1
@@ -21545,6 +21555,9 @@ var render = function() {
                       "disable-past": true
                     },
                     on: {
+                      update: function($event) {
+                        _vm.again = $event
+                      },
                       "click-date": _vm.onClickDay,
                       "click-event": _vm.onClickEvent
                     },

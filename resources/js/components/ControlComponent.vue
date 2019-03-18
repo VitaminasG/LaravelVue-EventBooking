@@ -10,7 +10,7 @@
             </div>
             <input type="text" class="form-control"
                    placeholder="Please select a day."
-                   v-model="date"
+                   v-model="date.pDate"
                    :disabled="true">
         </div>
 
@@ -21,10 +21,10 @@
             <input type="text" class="form-control"
                    placeholder="Please select a day."
                    v-model="cTitle"
-                   :disabled="!date">
+                   :disabled="!date.pDate">
         </div>
 
-        <button type="submit" class="btn btn-primary" :disabled="buttons.sub">Submit</button>
+        <button type="submit" class="btn btn-primary" :disabled="buttons.sub" @submit="$emit('update', true)" @click="submit">Submit</button>
 
         <hr>
 
@@ -51,24 +51,28 @@
                    :disabled="!eTitle">
         </div>
 
-        <button type="submit" class="btn btn-info" :disabled="buttons.edit">Update</button>
-        <button type="submit" class="btn btn-danger" :disabled="buttons.edit">Delete</button>
+        <button type="submit" class="btn btn-info" :disabled="buttons.edit" @submit="$emit('update', true)" @click="update">Update</button>
+        <button type="submit" class="btn btn-danger" :disabled="buttons.edit" @submit="$emit('update', true)" @click="remove">Delete</button>
 
     </form>
 </template>
 
 <script>
+
+    import axios from 'axios';
+
     export default {
         data(){
             return{
                 buttons: { sub:true, edit:true },
                 cDate: '',
                 cTitle: '',
+                url: '/home/event/'
             }
         },
         props: {
             date: {
-                default: ''
+                type: Object
             },
             event:{
                 type: Object
@@ -76,7 +80,7 @@
         },
         watch:{
             cTitle(value){
-                if(value.length > 0 && this.date.length > 0){
+                if(value.length > 0 && this.date.pDate.length > 0){
                     this.notEmpty('sub', false);
                 } else {
                     this.notEmpty('sub', true);
@@ -92,8 +96,13 @@
                     this.notEmpty('edit', true);
                 }
             },
-            eTitle:function(){
-                return this.event.eTitle;
+            eTitle:{
+                get(){
+                    return this.event.eTitle;
+                },
+                set(value){
+                    this.event.eTitle = value;
+                }
             },
         },
         methods: {
@@ -101,13 +110,31 @@
                 this.buttons[button] = bool;
             },
             submit(){
-
+                axios.post(this.url,{
+                    date: this.date.pDate,
+                    title: this.cTitle
+                }).then(function (response){
+                    console.log(response)
+                }).catch(function (error){
+                    console.log(error)
+                });
             },
             update(){
-
+                axios.patch(this.url+this.event.eId,{
+                    title: this.eTitle
+                }).then(function (response){
+                        console.log(response)
+                    }).catch(function (error){
+                    console.log(error)
+                });
             },
-            delete(){
-
+            remove(){
+                axios.delete(this.url+this.event.eId)
+                    .then(function (response){
+                    console.log(response)
+                }).catch(function (error){
+                    console.log(error)
+                });
             }
         }
     }

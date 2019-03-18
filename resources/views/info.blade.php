@@ -19,7 +19,7 @@
                             <li class="list-group-item text-success">Add informational Component to base url</li>
                             <li class="list-group-item text-success">Wire User and Event models with Event DB seeding</li>
                             <li class="list-group-item text-success">Expend Auth controller to pass user data to Vue</li>
-                            <li class="list-group-item active">Create an API to control data with Guards and token</li>
+                            <li class="list-group-item text-success">Create an API to control data with Guards and token</li>
                         </ul>
                     </div>
                 </div>
@@ -34,7 +34,8 @@
                             <li class="list-group-item text-success">Add informational Component to base url</li>
                             <li class="list-group-item text-success">Add ToDo list to info Component</li>
                             <li class="list-group-item text-success">Get data from Laravel and add to Calendar component</li>
-                            <li class="list-group-item active">Create an event booking interface for Calendar component</li>
+                            <li class="list-group-item text-success">Create an event booking interface for Calendar component</li>
+                            <li class="list-group-item active">Update calendar on every axios request</li>
                         </ul>
                     </div>
                 </div>
