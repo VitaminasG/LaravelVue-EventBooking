@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Str;
+
 /**
  * Class InfoController
  *
@@ -17,6 +19,10 @@ class InfoController extends Controller
 	 */
 	public function index()
 	{
-		return view('info');
+
+		$token = Str::random(60);
+
+		return view('info', compact('token'));
+
 	}
 }

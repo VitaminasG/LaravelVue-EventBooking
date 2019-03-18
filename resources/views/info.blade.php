@@ -35,7 +35,7 @@
                             <li class="list-group-item text-success">Add ToDo list to info Component</li>
                             <li class="list-group-item text-success">Get data from Laravel and add to Calendar component</li>
                             <li class="list-group-item text-success">Create an event booking interface for Calendar component</li>
-                            <li class="list-group-item active">Update calendar on every axios request</li>
+                            <li class="list-group-item text-success">Update calendar on every axios request</li>
                         </ul>
                     </div>
                 </div>

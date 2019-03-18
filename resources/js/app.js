@@ -19,7 +19,7 @@ const AsyncComponent = () => ({
     component: new Promise((resolve, reject) => {
        setTimeout(() => {
            resolve(Async);
-       }, 1000);
+       }, 500);
     }),
     loading: LoadingComponent,
     error: ErrorComponent,

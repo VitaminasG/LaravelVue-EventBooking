@@ -10,7 +10,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="messenger"></span>
                     </div>
-                    <div class="alert alert-info text-center mb-0">
+                    <div class="alert alert-info text-center mb-0" v-model="message">
                         {{ message }}
                     </div>
                 </div>
@@ -20,7 +20,7 @@
         <div v-show="!show" class="row h-100 w-100">
 
             <div class="col-sm-4 _flex-block">
-                <control-component :date="picked" :event="eBooked"></control-component>
+                <control-component :date="picked" :event="eBooked" @update-msg="getHandler($event)"></control-component>
             </div>
 
             <div class="col-sm-8 _flex-block my-2">
@@ -28,7 +28,6 @@
                     <h3 class="card-header text-center">My Calendar</h3>
                     <div class="card-body">
                         <calendar-view
-                                @update="again = $event"
                                 @click-date="onClickDay"
                                 @click-event="onClickEvent"
                                 :show-date="showDate"
@@ -66,7 +65,6 @@
                 show: true,
                 url: '/home/data',
                 userData: '',
-                again: false,
 
                 defaultMsg: 'Hi! I am your action messenger. Please pick date from calendar',
                 calendMsg: '',
@@ -94,14 +92,12 @@
                 }
             },
         },
-        watch:{
-          again(){
-              this.show = true;
-              this.request(this.url);
-          }
-        },
         methods: {
-
+            getHandler(e){
+                this.show = true;
+                this.calendMsg = e;
+                this.request(this.url);
+            },
             onClickDay(d) {
                 this.calendMsg = `You clicked on: ${d.toDateString()}`;
                 this.picked.pDate = this.isoYearMonthDay(d);
@@ -132,9 +128,9 @@
                         this.userData = response.data;
                         this.show = false;
                     })
-                    .catch(function (error) {
+                    .catch( error =>{
                         console.log(error);
-                    })
+                    });
             },
         }
     }

@@ -8,7 +8,6 @@
 /public/hot
 /public/storage
 /public/mix-manifest.json
-/public/chunks/
 /storage/*.key
 /vendor
 .env

@@ -43,7 +43,7 @@
 /******/
 /******/ 	// script path function
 /******/ 	function jsonpScriptSrc(chunkId) {
-/******/ 		return __webpack_require__.p + "chunks/" + ({}[chunkId]||chunkId) + "." + {"0":"fd2d7ca09900dd9bb39b","1":"d659beb38005f72e6347"}[chunkId] + ".js"
+/******/ 		return __webpack_require__.p + "chunks/" + ({}[chunkId]||chunkId) + "." + {"0":"6bdac467834cd564100f","1":"d659beb38005f72e6347"}[chunkId] + ".js"
 /******/ 	}
 /******/
 /******/ 	// The require function
@@ -1978,7 +1978,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 
@@ -1995,7 +1994,6 @@ __webpack_require__.r(__webpack_exports__);
       show: true,
       url: '/home/data',
       userData: '',
-      again: false,
       defaultMsg: 'Hi! I am your action messenger. Please pick date from calendar',
       calendMsg: '',
       showDate: new Date(),
@@ -2023,13 +2021,12 @@ __webpack_require__.r(__webpack_exports__);
       }
     }
   },
-  watch: {
-    again: function again() {
-      this.show = true;
-      this.request(this.url);
-    }
-  },
   methods: {
+    getHandler: function getHandler(e) {
+      this.show = true;
+      this.calendMsg = e;
+      this.request(this.url);
+    },
     onClickDay: function onClickDay(d) {
       this.calendMsg = "You clicked on: ".concat(d.toDateString());
       this.picked.pDate = this.isoYearMonthDay(d);
@@ -21500,13 +21497,26 @@ var render = function() {
             _c("div", { staticClass: "input-group" }, [
               _vm._m(0),
               _vm._v(" "),
-              _c("div", { staticClass: "alert alert-info text-center mb-0" }, [
-                _vm._v(
-                  "\n                    " +
-                    _vm._s(_vm.message) +
-                    "\n                "
-                )
-              ])
+              _c(
+                "div",
+                {
+                  staticClass: "alert alert-info text-center mb-0",
+                  model: {
+                    value: _vm.message,
+                    callback: function($$v) {
+                      _vm.message = $$v
+                    },
+                    expression: "message"
+                  }
+                },
+                [
+                  _vm._v(
+                    "\n                    " +
+                      _vm._s(_vm.message) +
+                      "\n                "
+                  )
+                ]
+              )
             ])
           ])
         ]
@@ -21531,7 +21541,12 @@ var render = function() {
             { staticClass: "col-sm-4 _flex-block" },
             [
               _c("control-component", {
-                attrs: { date: _vm.picked, event: _vm.eBooked }
+                attrs: { date: _vm.picked, event: _vm.eBooked },
+                on: {
+                  "update-msg": function($event) {
+                    return _vm.getHandler($event)
+                  }
+                }
               })
             ],
             1
@@ -21555,9 +21570,6 @@ var render = function() {
                       "disable-past": true
                     },
                     on: {
-                      update: function($event) {
-                        _vm.again = $event
-                      },
                       "click-date": _vm.onClickDay,
                       "click-event": _vm.onClickEvent
                     },
@@ -34274,7 +34286,7 @@ var AsyncComponent = function AsyncComponent() {
     component: new Promise(function (resolve, reject) {
       setTimeout(function () {
         resolve(_components_CalendarComponent__WEBPACK_IMPORTED_MODULE_0__["default"]);
-      }, 1000);
+      }, 500);
     }),
     loading: _components_AsyncLoading__WEBPACK_IMPORTED_MODULE_1__["default"],
     error: _components_AsyncLoadError__WEBPACK_IMPORTED_MODULE_2__["default"],
