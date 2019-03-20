@@ -2,9 +2,8 @@
 
 namespace App\Providers;
 
-use App;
 use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
-use Illuminate\Contracts\Routing\UrlGenerator;
+use Illuminate\Routing\UrlGenerator;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -21,15 +20,17 @@ class AppServiceProvider extends ServiceProvider
 	    }
     }
 
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
-	public function boot(UrlGenerator $url)
-	{
-		if( App::environment('production')){
-			$url->forceScheme('https');
-		}
-	}
+	/**
+	 * Bootstrap any application services.
+	 *
+	 * @param UrlGenerator $url
+	 *
+	 * @return void
+	 */
+    public function boot(UrlGenerator $url)
+    {
+	    if( $this->app->environment() === 'production'){
+	    	$url->formatScheme('https://');
+	    }
+    }
 }
