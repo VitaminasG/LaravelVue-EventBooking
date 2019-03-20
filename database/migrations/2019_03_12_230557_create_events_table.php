@@ -17,7 +17,7 @@ class CreateEventsTable extends Migration
             $table->bigIncrements('id');
 	        $table->integer('user_id')->nullable(false);
             $table->string('title')->default('Default Title');
-            $table->date('date')->default(DB::raw('CURDATE()'));
+            $table->date('date');
             $table->timestamps();
         });
     }

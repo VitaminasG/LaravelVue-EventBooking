@@ -33,7 +33,7 @@ class EventController extends Controller
 
 		$request->validate([
 			'date' => 'required',
-			'title' => 'required'
+			'title' => 'required|regex:/^[a-zA-Z]+$/u'
 		]);
 
 		$this->event->date = $request->date;
