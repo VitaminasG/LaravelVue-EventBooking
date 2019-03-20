@@ -33,11 +33,11 @@ class EventController extends Controller
 
 		$request->validate([
 			'date' => 'required',
-			'title' => 'required|regex:/^[a-zA-Z]+$/u'
+			'title' => 'required|regex:/^(?:[A-Za-z]+)(?:[A-Za-z0-9 _]*)$/'
 		]);
 
 		$this->event->date = $request->date;
-		$this->event->title = $request->title;
+		$this->event->title = htmlspecialchars($request->title, ENT_QUOTES);
 		$this->event->user_id = $request->user('api')->id;
 		$this->event->save();
 
@@ -62,7 +62,7 @@ class EventController extends Controller
 
 		$event = $this->event->find($id);
 
-		$event->title = $request->title;
+		$event->title = htmlspecialchars($request->title, ENT_QUOTES);
 
 		$event->update();
 
