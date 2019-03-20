@@ -83,7 +83,7 @@
                 buttons: { sub:true, edit:true },
                 cDate: '',
                 cTitle: '',
-                url: '/home/event/',
+                url: '/home/event',
                 message:'',
             }
         },
@@ -138,7 +138,7 @@
                 });
             },
             update(){
-                axios.patch(this.url+this.event.eId,{
+                axios.patch(this.url+'/'+this.event.eId,{
                     title: this.eTitle
                 }).then(response => {
                     this.message = response.data;
@@ -148,7 +148,7 @@
                 });
             },
             remove(){
-                axios.delete(this.url+this.event.eId)
+                axios.delete(this.url+'/'+this.event.eId)
                     .then(response => {
                         this.message = response.data;
                         this.$emit('update-msg', this.message);
